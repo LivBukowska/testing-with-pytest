@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
+import math
 
 
 register_matplotlib_converters()
@@ -198,3 +199,16 @@ def plot_meteogram(df):
     ax2b.set_ylabel('Degrees', fontsize=label_fontsize)
 
     return fig, ax1, ax2, ax2b
+
+def wind_components(speed, dir):
+    """
+    Calculate the U, V vector components from the speed and direction
+    :param speed: speed in km/h, int 0 - range_of_int
+    :param dir: degree, int in range 0 - 360
+    :return:
+    """
+
+    u = (-speed) * math.sin(dir)
+    v = (-speed) * math.cos(dir)
+
+    return u, v
