@@ -5,8 +5,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
-import math
-
 
 register_matplotlib_converters()
 
@@ -203,12 +201,15 @@ def plot_meteogram(df):
 def wind_components(speed, dir):
     """
     Calculate the U, V vector components from the speed and direction
-    :param speed: speed in km/h, int 0 - range_of_int
-    :param dir: degree, int in range 0 - 360
+    :param speed: int
+                speed in km/h
+    :param dir: radians
+                direction of wind
     :return:
     """
+    dir = np.radians(dir)
 
-    u = (-speed) * math.sin(dir)
-    v = (-speed) * math.cos(dir)
+    u = (-speed) * np.sin(dir)
+    v = (-speed) * np.cos(dir)
 
     return u, v

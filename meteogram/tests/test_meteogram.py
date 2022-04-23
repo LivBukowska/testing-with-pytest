@@ -2,7 +2,8 @@
 import datetime
 
 from meteogram import meteogram
-from numpy.testing import assert_almost_equal
+from numpy.testing import assert_almost_equal, assert_array_almost_equal
+import numpy as np
 
 #
 # Example starter test
@@ -103,7 +104,6 @@ def test_floating_substraction():
 
     # Cleanup - none
 
-#
 def test_vector_components_of_wind_direction_0_degree():
     # Setup
     desired = 0, -100
@@ -112,11 +112,10 @@ def test_vector_components_of_wind_direction_0_degree():
 
     # Verify
     assert_almost_equal(actual, desired, 6)
-    # Cleanup
 
 def test_vector_components_of_wind_direction_45_degree():
     # Setup
-    desired = -85.090352, -52.532198
+    desired = -70.710678, -70.710678
 
     # Exercise
     actual = meteogram.wind_components(100, 45)
@@ -124,19 +123,15 @@ def test_vector_components_of_wind_direction_45_degree():
     # Verify
     assert_almost_equal(actual, desired, 6)
 
-    # Cleanup
-
 def test_vector_components_of_wind_direction_360_degree():
     # Setup
-    desired = -95.891572, 28.369109
+    desired = 0, -100
 
     # Exercise
     actual = meteogram.wind_components(100, 360)
 
     # Verify
     assert_almost_equal(actual, desired, 6)
-
-    # Cleanup
 
 def test_vector_components_of_wind_direction_0_speed():
     # Setup
@@ -147,6 +142,20 @@ def test_vector_components_of_wind_direction_0_speed():
 
     # Verify
     assert_almost_equal(actual, desired)
+
+def test_wind_components():
+    # Setup
+    speed = np.array([100, 100, 100, 0])
+    direction = np.array([0, 45, 360, 45])
+
+    # Exercise
+    u, v = meteogram.wind_components(speed, direction)
+
+    # Verify
+    true_u = np.array([0, -70.710678, 0, 0])
+    true_v = np.array([-100, -70.710678, -100, 0])
+    assert_array_almost_equal(u, true_u)
+    assert_array_almost_equal(v, true_v)
 
     # Cleanup
 
