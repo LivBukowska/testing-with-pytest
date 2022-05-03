@@ -193,6 +193,17 @@ def test_build_asos_request_url_defaults():
     truth = 'https://mesonet.agron.iastate.edu/request/asos/1min_dl.php?station%5B%5D=FSD&tz=UTC&year1=2020&month1=11&day1=02&hour1=12&minute1=00&year2=2020&month2=11&day2=03&hour2=12&minute2=00&vars%5B%5D=tmpf&vars%5B%5D=dwpf&vars%5B%5D=sknt&vars%5B%5D=drct&sample=1min&what=view&delim=comma&gis=yes'
     assert url == truth
 
+    # Cleanup - none
+
+def test_potential_temperature():
+    # Setup - none
+    # Exercise
+    potential_temperature = meteogram.potential_temperature(800, 273)
+    # Verify
+    truth = 290.96
+    assert_almost_equal(potential_temperature, truth, 2)
+
+
 
 #
 # Exercise 3 - Stop Here
@@ -203,6 +214,19 @@ def test_build_asos_request_url_defaults():
 # think of cases that may not change coverage, but should be tested
 # for as well.
 #
+
+def test_current_utc_time():
+    # Setup - none
+    # Exercise
+
+    date = meteogram.current_utc_time()
+
+    # Verify
+
+    truth = datetime.datetime.utcnow()
+    assert date == truth
+
+    # Cleanup - none
 
 #
 # Exercise 4 - Stop Here

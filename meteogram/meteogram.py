@@ -32,7 +32,7 @@ def current_utc_time():
 
     Returns
     -------
-    datetime.dateimte: current UTC date and time
+    datetime.datetime: current UTC date and time
 
     """
     return datetime.datetime.utcnow()
