@@ -1,10 +1,11 @@
 """Test use of the meteogram module."""
 import datetime
-
-from meteogram import meteogram
-from numpy.testing import assert_almost_equal, assert_array_almost_equal
+import pytest
 import numpy as np
 from unittest.mock import patch
+from meteogram import meteogram
+from numpy.testing import assert_almost_equal, assert_array_almost_equal
+
 
 #
 # Example starter test
@@ -24,6 +25,7 @@ def test_degF_to_degC_at_freezing():
     assert result == freezing_degC
 
     # Cleanup - none necessary
+
 
 #
 # Instructor led introductory examples
@@ -85,12 +87,14 @@ def test_build_asos_request_url_double_digit_datetimes():
 
     pass
 
+
 #
 # Exercise 2
 #
 
 def test_does_three_equal_three():
     assert 3 == 3
+
 
 def test_floating_substraction():
     # Setup
@@ -105,6 +109,7 @@ def test_floating_substraction():
 
     # Cleanup - none
 
+
 def test_vector_components_of_wind_direction_0_degree():
     # Setup
     desired = 0, -100
@@ -113,6 +118,7 @@ def test_vector_components_of_wind_direction_0_degree():
 
     # Verify
     assert_almost_equal(actual, desired, 6)
+
 
 def test_vector_components_of_wind_direction_45_degree():
     # Setup
@@ -124,6 +130,7 @@ def test_vector_components_of_wind_direction_45_degree():
     # Verify
     assert_almost_equal(actual, desired, 6)
 
+
 def test_vector_components_of_wind_direction_360_degree():
     # Setup
     desired = 0, -100
@@ -134,6 +141,7 @@ def test_vector_components_of_wind_direction_360_degree():
     # Verify
     assert_almost_equal(actual, desired, 6)
 
+
 def test_vector_components_of_wind_direction_0_speed():
     # Setup
     desired = 0, 0
@@ -143,6 +151,7 @@ def test_vector_components_of_wind_direction_0_speed():
 
     # Verify
     assert_almost_equal(actual, desired)
+
 
 def test_wind_components():
     # Setup
@@ -160,12 +169,14 @@ def test_wind_components():
 
     # Cleanup - none
 
+
 #
 # Instructor led mock example
 #
 def mocked_current_utc_time():
     """Mock our UTC time function for testing with defaults"""
     return datetime.datetime(2020, 11, 3, 12)
+
 
 @patch('meteogram.meteogram.current_utc_time', new=mocked_current_utc_time)
 def test_that_mock_works():
@@ -179,6 +190,8 @@ def test_that_mock_works():
     assert result == truth
 
     # Cleanup - none
+
+
 #
 # Exercise 3
 #
@@ -194,15 +207,6 @@ def test_build_asos_request_url_defaults():
     assert url == truth
 
     # Cleanup - none
-
-def test_potential_temperature():
-    # Setup - none
-    # Exercise
-    potential_temperature = meteogram.potential_temperature(800, 273)
-    # Verify
-    truth = 290.96
-    assert_almost_equal(potential_temperature, truth, 2)
-
 
 
 #
@@ -228,6 +232,18 @@ def test_current_utc_time():
 
     # Cleanup - none
 
+
+def test_potential_temperature():
+    # Setup - none
+    # Exercise
+    potential_temperature = meteogram.potential_temperature(800, 273)
+    # Verify
+    truth = 290.96
+    assert_almost_equal(potential_temperature, truth, 2)
+
+    # Cleanup - none
+
+
 #
 # Exercise 4 - Stop Here
 #
@@ -235,6 +251,22 @@ def test_current_utc_time():
 #
 # Instructor led example of image testing
 #
+
+@pytest.mark.mpl_image_compare()
+def test_plotting_meteogram_defaults():
+    # Setup
+    url = meteogram.build_asos_request_url('AMW',
+                                           start_date=datetime.datetime(2020, 11, 3),
+                                           end_date=datetime.datetime(2020, 11, 5))
+    df = meteogram.download_asos_data(url)
+
+    # Exercise
+    fig, _, _, _ = meteogram.plot_meteogram(df)
+
+    # Verify - Done elswhere
+    # Cleanup - none
+
+    return fig
 
 #
 # Exercise 5
