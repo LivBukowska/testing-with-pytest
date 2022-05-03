@@ -4,6 +4,7 @@ import datetime
 from meteogram import meteogram
 from numpy.testing import assert_almost_equal, assert_array_almost_equal
 import numpy as np
+from unittest.mock import patch
 
 #
 # Example starter test
@@ -85,7 +86,7 @@ def test_build_asos_request_url_double_digit_datetimes():
     pass
 
 #
-# Exercise 1 - Stop Here
+# Exercise 2
 #
 
 def test_does_three_equal_three():
@@ -157,19 +158,41 @@ def test_wind_components():
     assert_array_almost_equal(u, true_u)
     assert_array_almost_equal(v, true_v)
 
-    # Cleanup
-
-#
-# Exercise 2 - Stop Here
-#
+    # Cleanup - none
 
 #
 # Instructor led mock example
 #
+def mocked_current_utc_time():
+    """Mock our UTC time function for testing with defaults"""
+    return datetime.datetime(2020, 11, 3, 12)
 
+@patch('meteogram.meteogram.current_utc_time', new=mocked_current_utc_time)
+def test_that_mock_works():
+    """Test if we know how to use a mock"""
+    # Setup - none
+    # Exercise
+    result = meteogram.current_utc_time()
+
+    # Verify
+    truth = datetime.datetime(2020, 11, 3, 12)
+    assert result == truth
+
+    # Cleanup - none
 #
 # Exercise 3
 #
+
+@patch('meteogram.meteogram.current_utc_time', new=mocked_current_utc_time)
+def test_build_asos_request_url_defaults():
+    # Setup - none
+    # Exercise
+    url = meteogram.build_asos_request_url('FSD')
+
+    # Verify
+    truth = 'https://mesonet.agron.iastate.edu/request/asos/1min_dl.php?station%5B%5D=FSD&tz=UTC&year1=2020&month1=11&day1=02&hour1=12&minute1=00&year2=2020&month2=11&day2=03&hour2=12&minute2=00&vars%5B%5D=tmpf&vars%5B%5D=dwpf&vars%5B%5D=sknt&vars%5B%5D=drct&sample=1min&what=view&delim=comma&gis=yes'
+    assert url == truth
+
 
 #
 # Exercise 3 - Stop Here
