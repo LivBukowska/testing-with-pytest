@@ -5,11 +5,20 @@ import numpy as np
 from unittest.mock import patch
 from meteogram import meteogram
 from numpy.testing import assert_almost_equal, assert_array_almost_equal
+from pathlib import Path
 
+@pytest.fixture
+def load_example_asos():
+    """Fixture to load example data"""
+    example_data_path = Path(__file__).resolve().parent / '..' / '..' / 'staticdata'
+    # __file__ returns current dir
+    data_path = example_data_path / 'AMW_example_data.csv'
+    return meteogram.download_asos_data(data_path)
 
 #
 # Example starter test
 #
+
 def test_degF_to_degC_at_freezing():
     """
     Test if celsius conversion is correct at freezing.
@@ -253,17 +262,16 @@ def test_potential_temperature():
 #
 
 @pytest.mark.mpl_image_compare()
-def test_plotting_meteogram_defaults():
+def test_plotting_meteogram_defaults(load_example_asos):
     # Setup
-    url = meteogram.build_asos_request_url('AMW',
-                                           start_date=datetime.datetime(2020, 11, 3),
-                                           end_date=datetime.datetime(2020, 11, 5))
-    df = meteogram.download_asos_data(url)
-
+    # url = meteogram.build_asos_request_url('AMW',
+    #                                        start_date=datetime.datetime(2020, 11, 3),
+    #                                        end_date=datetime.datetime(2020, 11, 5))
+    # df = meteogram.download_asos_data(url)
     # Exercise
-    fig, _, _, _ = meteogram.plot_meteogram(df)
+    fig, _, _, _ = meteogram.plot_meteogram(load_example_asos)
 
-    # Verify - Done elswhere
+    # Verify - Done elsewhere
     # Cleanup - none
 
     return fig
